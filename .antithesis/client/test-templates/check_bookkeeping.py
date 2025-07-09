@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import subprocess
+from security import safe_command
 
 def calculate_need(data):
     need = 0
@@ -37,7 +38,7 @@ def main():
     got_need = False
     for config in config_files:
         print(f"getting sync state for {config}")
-        result = subprocess.run(f"corrosion --config {config} sync generate", shell=True, capture_output=True, text=True)
+        result = safe_command.run(subprocess.run, f"corrosion --config {config} sync generate", shell=True, capture_output=True, text=True)
         if result.returncode != 0:
             exit(1)
         print(result.stdout)
